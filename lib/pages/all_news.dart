@@ -7,8 +7,9 @@ import 'package:news_app/services/news.dart';
 import 'package:news_app/services/slider_data.dart';
 
 class AllNews extends StatefulWidget {
-  String news;
-  AllNews({super.key, required this.news});
+  final String news;
+
+  const AllNews({super.key, required this.news});
 
   @override
   State<AllNews> createState() => _AllNewsState();
@@ -17,6 +18,7 @@ class AllNews extends StatefulWidget {
 class _AllNewsState extends State<AllNews> {
   List<sliderModel> sliders = [];
   List<ArticleModel> articles = [];
+
   @override
   void initState() {
     getSlider();
@@ -28,27 +30,25 @@ class _AllNewsState extends State<AllNews> {
     News newsclass = News();
     await newsclass.getNews();
     articles = newsclass.news;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   getSlider() async {
     Sliders slider = Sliders();
     await slider.getSlider();
     sliders = slider.sliders;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           "${widget.news} News",
-          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0.0,
@@ -59,7 +59,7 @@ class _AllNewsState extends State<AllNews> {
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemCount:
-            widget.news == "Breaking" ? sliders.length : articles.length,
+                widget.news == "Breaking" ? sliders.length : articles.length,
             itemBuilder: (context, index) {
               return AllNewsSection(
                   Image: widget.news == "Breaking"
@@ -81,12 +81,14 @@ class _AllNewsState extends State<AllNews> {
 }
 
 class AllNewsSection extends StatelessWidget {
-  String Image, desc, title, url;
-  AllNewsSection(
-      {super.key, required this.Image,
-        required this.desc,
-        required this.title,
-        required this.url});
+  final String Image, desc, title, url;
+
+  const AllNewsSection(
+      {super.key,
+      required this.Image,
+      required this.desc,
+      required this.title,
+      required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -113,13 +115,14 @@ class AllNewsSection extends StatelessWidget {
             title,
             maxLines: 2,
             style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           ),
           Text(
             desc,
             maxLines: 3,
+            style: TextStyle(color: Colors.white54),
           ),
           const SizedBox(
             height: 20.0,

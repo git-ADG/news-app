@@ -5,8 +5,9 @@ import 'package:news_app/pages/article_view.dart';
 import 'package:news_app/services/show_category_news.dart';
 
 class CategoryNews extends StatefulWidget {
-  String name;
-  CategoryNews({super.key, required this.name});
+  final String name;
+
+  const CategoryNews({super.key, required this.name});
 
   @override
   State<CategoryNews> createState() => _CategoryNewsState();
@@ -14,7 +15,6 @@ class CategoryNews extends StatefulWidget {
 
 class _CategoryNewsState extends State<CategoryNews> {
   List<ShowCategoryModel> categories = [];
-  bool _loading = true;
 
   @override
   void initState() {
@@ -27,17 +27,18 @@ class _CategoryNewsState extends State<CategoryNews> {
     await showCategoryNews.getCategoriesNews(widget.name.toLowerCase());
     categories = showCategoryNews.categories;
     setState(() {
-      _loading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text(
             widget.name,
-            style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           elevation: 0.0,
@@ -53,22 +54,28 @@ class _CategoryNewsState extends State<CategoryNews> {
                     Image: categories[index].urlToImage!,
                     desc: categories[index].description!,
                     title: categories[index].title!,
-                    url: categories[index].url!
-                );
+                    url: categories[index].url!);
               }),
         ));
   }
 }
 
 class ShowCategory extends StatelessWidget {
-  String Image, desc, title, url;
-  ShowCategory({super.key, required this.Image, required this.desc, required this.title, required this.url});
+  final String Image, desc, title, url;
+
+  const ShowCategory(
+      {super.key,
+      required this.Image,
+      required this.desc,
+      required this.title,
+      required this.url});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> ArticleView(blogUrl: url)));
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ArticleView(blogUrl: url)));
       },
       child: Column(
         children: [
@@ -88,12 +95,18 @@ class ShowCategory extends StatelessWidget {
             title,
             maxLines: 2,
             style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold),
           ),
-          Text(desc, maxLines: 3,),
-          const SizedBox(height: 20.0,),
+          Text(
+            desc,
+            maxLines: 3,
+            style: TextStyle(color: Colors.white54),
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
         ],
       ),
     );
