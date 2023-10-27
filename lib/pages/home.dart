@@ -77,140 +77,143 @@ class _HomeState extends State<Home> {
       body: _loading    //if loading is true show loading circle
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(//else show the home screen UI
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 10.0),
-                    height: 70,
-                    child: ListView.builder(//category list
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 10.0),
+                      height: 70,
+                      child: ListView.builder(//category list
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return CategoryTile(
+                              image: categories[index].image,
+                              categoryName: categories[index].categoryName,
+                            );
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    //breaking news section
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Breaking News!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                          //view all button
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AllNews(news: "Breaking")));
+                            },
+                            child: const Text(
+                              "View All",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    loading2
+                        ? const Center(child: CircularProgressIndicator())
+                        : CarouselSlider.builder(//slide show of breaking news
+                            itemCount: 5,
+                            itemBuilder: (context, index, realIndex) {
+                              String? res = sliders[index].urlToImage;
+                              String? res1 = sliders[index].title;
+                              return buildImage(res!, index, res1!);
+                            },
+                            options: CarouselOptions(
+                                height: 250,
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    activeIndex = index;
+                                  });
+                                })),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Center(child: buildIndicator()),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    //trending news section
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Trending News!",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                          //view all button
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AllNews(news: "Trending")));
+                            },
+                            child: const Text(
+                              "View All",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    ListView.builder(//trending news list
                         shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: categories.length,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: articles.length,
                         itemBuilder: (context, index) {
-                          return CategoryTile(
-                            image: categories[index].image,
-                            categoryName: categories[index].categoryName,
-                          );
-                        }),
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  //breaking news section
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Breaking News!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
-                        ),
-                        //view all button
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AllNews(news: "Breaking")));
-                          },
-                          child: const Text(
-                            "View All",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.blue,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  loading2
-                      ? const Center(child: CircularProgressIndicator())
-                      : CarouselSlider.builder(//slide show of breaking news
-                          itemCount: 5,
-                          itemBuilder: (context, index, realIndex) {
-                            String? res = sliders[index].urlToImage;
-                            String? res1 = sliders[index].title;
-                            return buildImage(res!, index, res1!);
-                          },
-                          options: CarouselOptions(
-                              height: 250,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              enlargeStrategy: CenterPageEnlargeStrategy.height,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  activeIndex = index;
-                                });
-                              })),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  Center(child: buildIndicator()),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  //trending news section
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Trending News!",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0),
-                        ),
-                        //view all button
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AllNews(news: "Trending")));
-                          },
-                          child: const Text(
-                            "View All",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.blue,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  ListView.builder(//trending news list
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: articles.length,
-                      itemBuilder: (context, index) {
-                        return BlogTile(
-                            url: articles[index].url!,
-                            desc: articles[index].description!,
-                            imageUrl: articles[index].urlToImage!,
-                            title: articles[index].title!);
-                      })
-                ],
+                          return BlogTile(
+                              url: articles[index].url!,
+                              desc: articles[index].description!,
+                              imageUrl: articles[index].urlToImage!,
+                              title: articles[index].title!);
+                        })
+                  ],
+                ),
               ),
             ),
     );
