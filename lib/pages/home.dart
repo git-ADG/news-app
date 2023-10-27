@@ -56,8 +56,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -76,16 +74,16 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      body: _loading
+      body: _loading    //if loading is true show loading circle
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
+          : SingleChildScrollView(//else show the home screen UI
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 10.0),
                     height: 70,
-                    child: ListView.builder(
+                    child: ListView.builder(//category list
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: categories.length,
@@ -99,6 +97,7 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 30.0,
                   ),
+                  //breaking news section
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                     child: Row(
@@ -111,13 +110,14 @@ class _HomeState extends State<Home> {
                               fontWeight: FontWeight.bold,
                               fontSize: 18.0),
                         ),
+                        //view all button
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        AllNews(news: "Breaking")));
+                                        const AllNews(news: "Breaking")));
                           },
                           child: const Text(
                             "View All",
@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
                   ),
                   loading2
                       ? const Center(child: CircularProgressIndicator())
-                      : CarouselSlider.builder(
+                      : CarouselSlider.builder(//slide show of breaking news
                           itemCount: 5,
                           itemBuilder: (context, index, realIndex) {
                             String? res = sliders[index].urlToImage;
@@ -161,6 +161,7 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 30.0,
                   ),
+                  //trending news section
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                     child: Row(
@@ -173,13 +174,14 @@ class _HomeState extends State<Home> {
                               fontWeight: FontWeight.bold,
                               fontSize: 18.0),
                         ),
+                        //view all button
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        AllNews(news: "Trending")));
+                                        const AllNews(news: "Trending")));
                           },
                           child: const Text(
                             "View All",
@@ -197,7 +199,7 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  ListView.builder(
+                  ListView.builder(//trending news list
                       shrinkWrap: true,
                       physics: const ClampingScrollPhysics(),
                       itemCount: articles.length,
@@ -319,10 +321,7 @@ class BlogTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //screen size
-    Size size = MediaQuery.of(context).size;
-    double height = size.height;
-    double width = size.width;
+
     //size constants
     double gap = MediaQuery.of(context).size.width / 1.7;
     return GestureDetector(

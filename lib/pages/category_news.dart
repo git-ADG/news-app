@@ -26,14 +26,15 @@ class _CategoryNewsState extends State<CategoryNews> {
     ShowCategoryNews showCategoryNews = ShowCategoryNews();
     await showCategoryNews.getCategoriesNews(widget.name.toLowerCase());
     categories = showCategoryNews.categories;
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    //constants
+    double margin = 10.0;
     return Scaffold(
-      backgroundColor: Colors.black,
+        backgroundColor: Colors.black,
         appBar: AppBar(
           title: Text(
             widget.name,
@@ -41,10 +42,10 @@ class _CategoryNewsState extends State<CategoryNews> {
                 color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          elevation: 0.0,
         ),
         body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10.0),
+          margin: EdgeInsets.symmetric(horizontal: margin),
+          //list of news
           child: ListView.builder(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
@@ -60,6 +61,8 @@ class _CategoryNewsState extends State<CategoryNews> {
   }
 }
 
+//news widget
+
 class ShowCategory extends StatelessWidget {
   final String Image, desc, title, url;
 
@@ -72,6 +75,13 @@ class ShowCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //constants
+    double width = MediaQuery.of(context).size.width;
+    double radius = 10;
+    double imageHeight = 200;
+    double gap1 = 5.0;
+    double gap2 = 20.0;
+    double fontSize = 18.0;
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
@@ -80,32 +90,32 @@ class ShowCategory extends StatelessWidget {
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(radius),
             child: CachedNetworkImage(
               imageUrl: Image,
-              width: MediaQuery.of(context).size.width,
-              height: 200,
+              width: width,
+              height: imageHeight,
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(
-            height: 5.0,
+          SizedBox(
+            height: gap1,
           ),
           Text(
             title,
             maxLines: 2,
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: fontSize,
                 fontWeight: FontWeight.bold),
           ),
           Text(
             desc,
             maxLines: 3,
-            style: TextStyle(color: Colors.white54),
+            style: const TextStyle(color: Colors.white54),
           ),
-          const SizedBox(
-            height: 20.0,
+          SizedBox(
+            height: gap2,
           ),
         ],
       ),
